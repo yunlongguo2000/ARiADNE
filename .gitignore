@@ -6,4 +6,6 @@ results/*
 model/*
 # Ignore all files in train directory
 train/*
+# Ignore all files in gifs directory
+gifs/*
 
