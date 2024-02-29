@@ -46,7 +46,9 @@ def writeToTensorBoard(writer, tensorboardData, curr_episode):
 def main():
     # use GPU/CPU for driver/worker
     device = torch.device('cuda') if USE_GPU_GLOBAL else torch.device('cpu')
+    print("Device for collecting training data: ", device)
     local_device = torch.device('cuda') if USE_GPU else torch.device('cpu')
+    print("Device for training network: ", local_device)
     
     # initialize neural networks
     global_policy_net = PolicyNet(INPUT_DIM, EMBEDDING_DIM).to(device)
