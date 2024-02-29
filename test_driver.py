@@ -13,12 +13,15 @@ def run_test():
         os.makedirs(trajectory_path)
 
     device = torch.device('cuda') if USE_GPU else torch.device('cpu')
+    print('Using device:', device)
     global_network = PolicyNet(INPUT_DIM, EMBEDDING_DIM).to(device)
 
-    if device == 'cuda':
+    if device.type == 'cuda':
+        print('Using GPU')
         checkpoint = torch.load(f'{model_path}/checkpoint.pth')
     else:
-        checkpoint = torch.load(f'{model_path}/checkpoint.pth', map_location = torch.device('cpu'))
+        print('Using CPU only')
+        checkpoint = torch.load(f'{model_path}/checkpoint.pth', map_location=torch.device('cpu'))
 
     global_network.load_state_dict(checkpoint['policy_model'])
 
