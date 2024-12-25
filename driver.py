@@ -14,11 +14,21 @@ from parameter import *
 ray.init()
 print("Welcome to RL autonomous exploration!")
 
-writer = SummaryWriter(train_path)
+if torch.cuda.is_available():
+    torch.cuda.empty_cache()
+
+train_path = os.path.join(train_path.split('/')[0], train_path.split('/')[1])
+model_path = os.path.join(model_path.split('/')[0], model_path.split('/')[1])
+gifs_path = os.path.join(gifs_path.split('/')[0], gifs_path.split('/')[1])
+
+if not os.path.exists(train_path):
+    os.makedirs(train_path)
 if not os.path.exists(model_path):
     os.makedirs(model_path)
 if not os.path.exists(gifs_path):
     os.makedirs(gifs_path)
+
+writer = SummaryWriter(train_path)
 
 
 def writeToTensorBoard(writer, tensorboardData, curr_episode):
