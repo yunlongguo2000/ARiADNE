@@ -12,10 +12,18 @@ from runner import RLRunner
 from parameter import *
 
 ray.init()
+torch.cuda.init()
 print("Welcome to RL autonomous exploration!")
 
 if torch.cuda.is_available():
     torch.cuda.empty_cache()
+
+if torch.cuda.is_available():
+    print("CUDA is available")
+    print("CUDA version:", torch.version.cuda)
+    print("cuDNN version:", torch.backends.cudnn.version())
+else:
+    print("CUDA is not available")
 
 # 使用 os.path.normpath 规范化路径
 train_path = os.path.normpath(train_path.strip())
