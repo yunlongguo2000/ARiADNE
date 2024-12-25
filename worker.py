@@ -181,14 +181,17 @@ class Worker:
         return bias_matrix
     
     def make_gif(self, path, n):
+        path = os.path.normpath(path.replace(" ", ""))
         with imageio.get_writer('{}/{}_explored_rate_{:.4g}.gif'.format(path, n, self.env.explored_rate), mode='I', duration=0.5) as writer:
             for frame in self.env.frame_files:
+                frame = os.path.normpath(frame.replace(" ", ""))
                 image = imageio.imread(frame)
                 writer.append_data(image)
         print('gif complete\n')
 
         # Remove files
         for filename in self.env.frame_files[:-1]:
+            filename = os.path.normpath(filename.replace(" ", ""))
             os.remove(filename)
 
 
