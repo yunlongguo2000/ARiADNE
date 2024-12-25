@@ -26,7 +26,8 @@ class Node():
 
     def update_observable_frontiers(self, observed_frontiers, new_frontiers, robot_belief):
         # remove observed frontiers in the observable frontiers
-        if observed_frontiers != []:
+        # if observed_frontiers != []:
+        if len(observed_frontiers) > 0:
             observed_index = []
             for i, point in enumerate(self.observable_frontiers):
                 if point[0] + point[1] * 1j in observed_frontiers[:, 0] + observed_frontiers[:, 1] * 1j:
@@ -35,7 +36,8 @@ class Node():
                 self.observable_frontiers.pop(index)
 
         # add new frontiers in the observable frontiers
-        if new_frontiers != []:
+        # if new_frontiers != []:
+        if len(new_frontiers) > 0:
             dist_list = np.linalg.norm(new_frontiers - self.coords, axis=-1)
             new_frontiers_in_range = new_frontiers[dist_list < self.sensor_range - 10]
             for point in new_frontiers_in_range:

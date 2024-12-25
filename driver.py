@@ -17,9 +17,15 @@ print("Welcome to RL autonomous exploration!")
 if torch.cuda.is_available():
     torch.cuda.empty_cache()
 
-train_path = os.path.join(train_path.split('/')[0], train_path.split('/')[1])
-model_path = os.path.join(model_path.split('/')[0], model_path.split('/')[1])
-gifs_path = os.path.join(gifs_path.split('/')[0], gifs_path.split('/')[1])
+# 使用 os.path.normpath 规范化路径
+train_path = os.path.normpath(train_path.strip())
+model_path = os.path.normpath(model_path.strip())
+gifs_path = os.path.normpath(gifs_path.strip())
+
+# 打印路径以检查是否正确
+print(f"Train path: {train_path}")
+print(f"Model path: {model_path}")
+print(f"Gifs path: {gifs_path}")
 
 if not os.path.exists(train_path):
     os.makedirs(train_path)
