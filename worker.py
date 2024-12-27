@@ -151,9 +151,10 @@ class Worker:
 
             # save a frame
             if self.save_image:
-                if not os.path.exists(gifs_path):
-                    os.makedirs(gifs_path)
-                self.env.plot_env(self.global_step, gifs_path, i, self.travel_dist)
+                gifs_path_ = os.path.normpath(gifs_path.replace(" ", ""))
+                if not os.path.exists(gifs_path_):
+                    os.makedirs(gifs_path_)
+                self.env.plot_env(self.global_step, gifs_path_, i, self.travel_dist)
 
             if done:
                 break

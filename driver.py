@@ -26,9 +26,9 @@ else:
     print("CUDA is not available")
 
 # 使用 os.path.normpath 规范化路径
-train_path = os.path.normpath(train_path.strip())
-model_path = os.path.normpath(model_path.strip())
-gifs_path = os.path.normpath(gifs_path.strip())
+train_path = os.path.normpath(train_path.replace(" ", ""))
+model_path = os.path.normpath(model_path.replace(" ", ""))
+gifs_path = os.path.normpath(gifs_path.replace(" ", ""))
 
 # 打印路径以检查是否正确
 print(f"Train path: {train_path}")
