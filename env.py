@@ -205,8 +205,11 @@ class Env():
         plt.imshow(self.robot_belief, cmap='gray')
         plt.axis((0, self.ground_truth_size[1], self.ground_truth_size[0], 0))
         # for i in range(len(self.graph_generator.x)):
-        #    plt.plot(self.graph_generator.x[i], self.graph_generator.y[i], 'tan', zorder=1)  # plot edges will take long time
+        #   plt.plot(self.graph_generator.x[i], self.graph_generator.y[i], 'tan', zorder=1)  # plot edges will take long time
         plt.scatter(self.node_coords[:, 0], self.node_coords[:, 1], c=self.node_utility, zorder=5)
+        for idx, coord in enumerate(self.node_coords):
+                plt.text(coord[0], coord[1], str(idx), fontsize=8, color='black', zorder=6)
+
         plt.scatter(self.frontiers[:, 0], self.frontiers[:, 1], c='r', s=2, zorder=3)
         plt.plot(self.xPoints, self.yPoints, 'b', linewidth=2)
         plt.plot(self.xPoints[-1], self.yPoints[-1], 'mo', markersize=8)

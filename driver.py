@@ -13,7 +13,7 @@ from parameter import *
 
 ray.init()
 torch.cuda.init()
-print("Welcome to RL autonomous exploration!")
+print("Welcome to 2D RL autonomous exploration!")
 
 if torch.cuda.is_available():
     torch.cuda.empty_cache()
@@ -110,14 +110,17 @@ def main():
         global_q_net1.load_state_dict(checkpoint['q_net1_model'])
         global_q_net2.load_state_dict(checkpoint['q_net2_model'])
         # log_alpha = checkpoint['log_alpha']  # not trainable when loaded from checkpoint, manually tune it for now
+        
         global_policy_optimizer.load_state_dict(checkpoint['policy_optimizer'])
         global_q_net1_optimizer.load_state_dict(checkpoint['q_net1_optimizer'])
         global_q_net2_optimizer.load_state_dict(checkpoint['q_net2_optimizer'])
         log_alpha_optimizer.load_state_dict(checkpoint['log_alpha_optimizer'])
+
         policy_lr_decay.load_state_dict(checkpoint['policy_lr_decay'])
         q_net1_lr_decay.load_state_dict(checkpoint['q_net1_lr_decay'])
         q_net2_lr_decay.load_state_dict(checkpoint['q_net2_lr_decay'])
         log_alpha_lr_decay.load_state_dict(checkpoint['log_alpha_lr_decay'])
+        
         curr_episode = checkpoint['episode']
 
         print("curr_episode set to ", curr_episode)

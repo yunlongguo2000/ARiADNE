@@ -140,7 +140,12 @@ class TestWorker:
         else:
             action_index = torch.multinomial(logp_list.exp(), 1).long().squeeze(1)
 
+        # print("Current index: ", current_index.item())
+        # print("Action index: ", action_index.item())
+        # print("Candidate node indices:", edge_inputs[0, 0].cpu().numpy())
+
         next_node_index = edge_inputs[0, 0, action_index.item()]
+        # print("Next node index: ", next_node_index.item())
         next_position = self.env.node_coords[next_node_index]
 
         return next_position, action_index
@@ -162,8 +167,8 @@ class TestWorker:
         print('gif complete\n')
 
         # Remove files
-        for filename in self.env.frame_files[:-1]:
-            os.remove(filename)
+        # for filename in self.env.frame_files[:-1]:
+        #     os.remove(filename)
 
     def work(self, curr_episode):
         self.run_episode(curr_episode)
