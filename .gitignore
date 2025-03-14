@@ -1,0 +1,10 @@
+# Ignore all .pyc files
+*.pyc
+# Ignore all files in results directory
+results/*  
+# Ignore all files in model directory
+model/*
+# Ignore all files in train directory
+train/*
+# Ignore all files in gifs directory
+gifs/*
