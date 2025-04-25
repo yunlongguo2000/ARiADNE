@@ -237,15 +237,35 @@ class PolicyNet(nn.Module):
 
         return current_node_feature, enhanced_current_node_feature
 
+    # def output_policy(self, current_node_feature, enhanced_current_node_feature,
+    #                   enhanced_node_feature, current_edge, edge_padding_mask):
+    #     embedding_dim = enhanced_node_feature.size()[2]
+    #     # current_state_feature = current_node_feature
+    #     current_state_feature = self.current_embedding(torch.cat((enhanced_current_node_feature,
+    #                                                             current_node_feature), dim=-1))
+
+    #     neighboring_feature = torch.gather(enhanced_node_feature, 1,
+    #                                        current_edge.repeat(1, 1, embedding_dim))
+
+    #     logp = self.pointer(current_state_feature, neighboring_feature, edge_padding_mask)
+    #     logp = logp.squeeze(1)
+
+    #     return logp
+
     def output_policy(self, current_node_feature, enhanced_current_node_feature,
-                      enhanced_node_feature, current_edge, edge_padding_mask):
+                    enhanced_node_feature, current_edge, edge_padding_mask):
+        device = enhanced_node_feature.device
+        current_node_feature = current_node_feature.to(device)
+        enhanced_current_node_feature = enhanced_current_node_feature.to(device)
+        current_edge = current_edge.to(device)
+        edge_padding_mask = edge_padding_mask.to(device)
+
         embedding_dim = enhanced_node_feature.size()[2]
-        # current_state_feature = current_node_feature
         current_state_feature = self.current_embedding(torch.cat((enhanced_current_node_feature,
                                                                 current_node_feature), dim=-1))
 
         neighboring_feature = torch.gather(enhanced_node_feature, 1,
-                                           current_edge.repeat(1, 1, embedding_dim))
+                                        current_edge.repeat(1, 1, embedding_dim))
 
         logp = self.pointer(current_state_feature, neighboring_feature, edge_padding_mask)
         logp = logp.squeeze(1)

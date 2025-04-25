@@ -14,6 +14,16 @@ from parameter import *
 ray.init()
 print("Welcome to RL autonomous exploration!")
 
+if torch.cuda.is_available():
+    torch.cuda.empty_cache()
+
+if torch.cuda.is_available():
+    print("CUDA is available")
+    print("CUDA version:", torch.version.cuda)
+    print("cuDNN version:", torch.backends.cudnn.version())
+else:
+    print("CUDA is not available")
+
 writer = SummaryWriter(train_path)
 if not os.path.exists(model_path):
     os.makedirs(model_path)
@@ -24,7 +34,9 @@ if not os.path.exists(gifs_path):
 def main():
     # use GPU/CPU for driver/worker
     device = torch.device('cuda') if USE_GPU_GLOBAL else torch.device('cpu')
+    print("Device for training network: ", device)
     local_device = torch.device('cuda') if USE_GPU else torch.device('cpu')
+    print("Device for collecting training data: ", local_device)
 
     # initialize neural networks
     global_policy_net = PolicyNet(NODE_INPUT_DIM, EMBEDDING_DIM).to(device)
@@ -239,6 +251,9 @@ def main():
                         alpha_loss.item(), *perf_data]
                 training_data.append(data)
 
+            
+            print("Lenth of training data: ", len(training_data))
+            print("Lenth of experience buffer: ", len(experience_buffer[0]))
             # write record to tensorboard
             if len(training_data) >= SUMMARY_WINDOW:
                 write_to_tensor_board(writer, training_data, curr_episode)
@@ -292,6 +307,7 @@ def write_to_tensor_board(writer, tensorboard_data, curr_episode):
     # each row in tensorboardData represents an episode
     # each column is a specific metric
 
+    print("Writing to tensorboard")
     tensorboard_data = np.array(tensorboard_data)
     tensorboard_data = list(np.nanmean(tensorboard_data, axis=0))
     reward, value, policy_loss, q_value_loss, entropy, policy_grad_norm, q_value_grad_norm, log_alpha, alpha_loss, travel_dist, success_rate, explored_rate = tensorboard_data

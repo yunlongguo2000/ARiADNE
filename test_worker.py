@@ -9,7 +9,7 @@ from env import Env
 from utils import *
 from model import PolicyNet
 from agent import Agent
-# from test_parameter import *  # 包含：MAX_EPISODE_STEP, SAVE_TRAJECTORY, trajectory_path, SAVE_LENGTH, length_path, gifs_path
+from test_parameter import *  # 包含：MAX_EPISODE_STEP, SAVE_TRAJECTORY, trajectory_path, SAVE_LENGTH, length_path, gifs_path
 
 class TestWorker:
     def __init__(self, meta_agent_id, policy_net, global_step, device='cpu', greedy=False, save_image=False):
