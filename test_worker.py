@@ -20,7 +20,8 @@ class TestWorker:
         self.save_image = save_image
 
         # 使用新版本的环境和智能体
-        self.env = Env(global_step, plot=save_image)
+        print("Gifs path:", gifs_path)
+        self.env = Env(global_step, plot=save_image, gifs_path=gifs_path)
         self.robot = Agent(policy_net, self.device, save_image)
 
         self.travel_dist = 0

@@ -10,6 +10,11 @@ from test_parameter import *
 def run_test():
     if not os.path.exists(trajectory_path):
         os.makedirs(trajectory_path)
+    if not os.path.exists(gifs_path):
+        os.makedirs(gifs_path)
+    if not os.path.exists(length_path):
+        os.makedirs(length_path)
+        
     device = torch.device('cuda') if USE_GPU else torch.device('cpu')
     print('Using device:', device)
     global_network = PolicyNet(NODE_INPUT_DIM, EMBEDDING_DIM).to(device)

@@ -9,9 +9,10 @@ from utils import *
 
 
 class Env:
-    def __init__(self, episode_index, plot=False):
+    def __init__(self, episode_index, plot=False, gifs_path=None):
         self.episode_index = episode_index
         self.plot = plot
+        self.gifs_path = gifs_path
         self.ground_truth, self.robot_cell = self.import_ground_truth(episode_index)
         self.ground_truth_size = np.shape(self.ground_truth)  # cell
         self.cell_size = CELL_SIZE  # meter
@@ -112,8 +113,8 @@ class Env:
         plt.suptitle('Explored ratio: {:.4g}  Travel distance: {:.4g}'.format(self.explored_rate, self.travel_dist))
         plt.tight_layout()
         # plt.show()
-        plt.savefig('{}/{}_{}_samples.png'.format(gifs_path, self.episode_index, step), dpi=150)
-        frame = '{}/{}_{}_samples.png'.format(gifs_path, self.episode_index, step)
+        plt.savefig('{}/{}_{}_samples.png'.format(self.gifs_path, self.episode_index, step), dpi=150)
+        frame = '{}/{}_{}_samples.png'.format(self.gifs_path, self.episode_index, step)
         plt.close()
         self.frame_files.append(frame)
 
