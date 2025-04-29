@@ -16,7 +16,7 @@ class Worker:
         self.save_image = save_image
         self.device = device
 
-        self.env = Env(global_step, plot=self.save_image)
+        self.env = Env(global_step, plot=self.save_image, gifs_path=gifs_path)
         self.robot = Agent(policy_net, self.device, self.save_image)
 
         self.episode_buffer = []

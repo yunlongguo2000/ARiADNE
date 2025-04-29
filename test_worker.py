@@ -9,18 +9,20 @@ from env import Env
 from utils import *
 from model import PolicyNet
 from agent import Agent
-from test_parameter import *  # 包含：MAX_EPISODE_STEP, SAVE_TRAJECTORY, trajectory_path, SAVE_LENGTH, length_path, gifs_path
+from test_parameter import *
 
 class TestWorker:
-    def __init__(self, meta_agent_id, policy_net, global_step, device='cpu', greedy=False, save_image=False):
+    def __init__(self, meta_agent_id, policy_net, global_step, device='cpu', greedy=False, save_image=False,
+                 gifs_path=None, trajectory_path=None, length_path=None):
         self.device = device
         self.greedy = greedy
         self.metaAgentID = meta_agent_id
         self.global_step = global_step
         self.save_image = save_image
+        self.gifs_path = gifs_path
+        self.trajectory_path = trajectory_path
+        self.length_path = length_path
 
-        # 使用新版本的环境和智能体
-        print("Gifs path:", gifs_path)
         self.env = Env(global_step, plot=save_image, gifs_path=gifs_path)
         self.robot = Agent(policy_net, self.device, save_image)
 
@@ -32,7 +34,7 @@ class TestWorker:
 
     def run_episode(self, curr_episode):
         done = False
-        # 更新规划状态：更新地图、当前位置、frontier等
+        # update the planning state: update map, current location, frontier, etc.
         self.robot.update_planning_state(self.env.belief_info, self.env.robot_location)
         observation = self.robot.get_observation()
 
@@ -41,11 +43,11 @@ class TestWorker:
             self.env.plot_env(0)
 
         for i in range(MAX_EPISODE_STEP):
-            # 保存轨迹（若配置要求）
+            # save the trajectory
             if SAVE_TRAJECTORY:
-                if not os.path.exists(trajectory_path):
-                    os.makedirs(trajectory_path)
-                csv_filename = os.path.join('results', 'trajectory', 'ours_trajectory_result.csv')
+                if not os.path.exists(self.trajectory_path):
+                    os.makedirs(self.trajectory_path)
+                csv_filename = os.path.join(self.trajectory_path, 'trajectory_result.csv')
                 new_file = not os.path.exists(csv_filename)
                 field_names = ['dist', 'area']
                 with open(csv_filename, 'a', newline='') as csvfile:
@@ -59,7 +61,7 @@ class TestWorker:
             next_location, action_index = self.robot.select_next_waypoint(observation)
             self.save_action(action_index)
 
-            # 检查下一位置是否在候选邻居中
+            # check if the next location is in the candidate neighbors
             node = self.robot.node_manager.nodes_dict.find((self.robot.location[0], self.robot.location[1]))
             check = np.array(list(node.data.neighbor_set)).reshape(-1, 2)
             assert next_location[0] + next_location[1]*1j in (check[:,0] + check[:,1]*1j), \
@@ -88,9 +90,9 @@ class TestWorker:
         self.perf_metrics['success_rate'] = done
 
         if SAVE_LENGTH:
-            if not os.path.exists(length_path):
-                os.makedirs(length_path)
-            csv_filename = os.path.join('results', 'length', 'ours_length_result.csv')
+            if not os.path.exists(self.length_path):
+                os.makedirs(self.length_path)
+            csv_filename = os.path.join(self.length_path, 'length_result.csv')
             new_file = not os.path.exists(csv_filename)
             field_names = ['dist']
             with open(csv_filename, 'a', newline='') as csvfile:
@@ -101,7 +103,7 @@ class TestWorker:
                 writer.writerows(csv_data)
 
         if self.save_image:
-            make_gif(gifs_path, self.global_step, self.env.frame_files, self.env.explored_rate)
+            make_gif(self.gifs_path, self.global_step, self.env.frame_files, self.env.explored_rate)
 
     def save_observation(self, observation):
         node_inputs, node_padding_mask, edge_mask, current_index, current_edge, edge_padding_mask = observation

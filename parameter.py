@@ -2,10 +2,10 @@
 FOLDER_NAME = 'ariadne1'
 model_path = f'model/{FOLDER_NAME}'
 train_path = f'train/{FOLDER_NAME}'
-gifs_path = f'gifs/{FOLDER_NAME}'
+gifs_path = f'gifs/{FOLDER_NAME}/train'
 
 # save training data
-SUMMARY_WINDOW = 32  # how many training steps before writing data to tensorboard
+SUMMARY_WINDOW = 4  # how many training steps before writing data to tensorboard
 LOAD_MODEL = False  # do you want to load the model trained before
 SAVE_IMG_GAP = 100  # how many episodes before saving a gif
 
