@@ -31,6 +31,30 @@ Launch your conda environment if any and run:
 The default training code requires around 8GB VRAM and 20G RAM. 
 You can modify the hyperparameters in `parameter.py`.
 
+#### Testing
+To test the trained model, you can run:
+
+```python test_driver.py```
+
+This will load the trained model and run the test in the environment.
+
+#### Probable Errors
+```
+Failed to register worker 01000000ffffffffffffffffffffffffffffffffffffffffffffffff to Raylet.
+```
+This error is typically related to runtime issues with the `Ray` framework, possibly caused by improper startup of `Ray` processes or conflicts with temporary files. Follow these steps to resolve the issue:
+1. Stop the `Ray` service:
+```
+ray stop
+```
+2. Remove the `Ray` temporary files:
+```
+rm -rf /tmp/ray
+```
+3. Then, restart the `Ray` service:
+```
+ray start --head
+```
 
 ## Files
 * `parameters.py` Training parameters.
@@ -42,7 +66,15 @@ You can modify the hyperparameters in `parameter.py`.
 * `node_manager.py` Manage and update the informative graph.
 * `quads` Quad tree for node indexing provided by [Daniel Lindsley](https://github.com/toastdriven).
 * `sensor.py` Simulate the sensor model of Lidar.
+* `utils.py` Utility functions.
+* `test_driver.py` Driver of testing program, load the trained model and run the test.
+* `test_worker.py` Interact with environment during testing.
+* `test_parameters.py` Testing parameters.
 * `/maps` Maps of training environments provided by <a href="https://github.com/RobustFieldAutonomyLab/DRL_robot_exploration">Chen et al.</a>.
+* `/gifs` Gifs of the ARiADNE, including the training and testing process.
+* `/model` Trained models of ARiADNE.
+* `/train` Training logs of ARiADNE.
+* `/results` Testing results of ARiADNE.
 
 ### Demo of ARiADNE
 
